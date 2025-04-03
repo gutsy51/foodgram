@@ -3,6 +3,11 @@ volumes:
   static:
   media:
 
+networks:
+  default:
+    driver: bridge
+    name: foodgram_network
+
 services:
   postgres:
     container_name: foodgram-psql
@@ -17,6 +22,8 @@ services:
       retries: 5
       start_period: 10s
     restart: unless-stopped
+    networks:
+      - default
 
   backend:
     container_name: foodgram-back
@@ -29,12 +36,15 @@ services:
       - static:/app/foodgram/static/        # Static files.
     depends_on:
       - postgres
+    networks:
+      - default
 
   frontend:
     container_name: foodgram-front
     build: ../frontend/
     volumes:
       - ../frontend/:/app/result_build/
+
   nginx:
     container_name: foodgram_proxy
     image: nginx:1.25.4-alpine
@@ -49,3 +59,5 @@ services:
       - media:/usr/share/nginx/html/media/
     depends_on:
       - backend
+    networks:
+      - default
