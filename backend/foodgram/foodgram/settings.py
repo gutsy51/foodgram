@@ -1,9 +1,22 @@
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+
+# Set the project root directory.
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+# Load environment variables if running locally.
+if not os.getenv('IS_DOCKER'):
+    # 'IS_DOCKER' will exist only if running in Docker.
+    # WARNING: If running locally, you should manually set up the PSQL.
+    env_path = BASE_DIR / '../../infra/.env'
+    print(BASE_DIR, '\n', env_path, '\nexists:', os.path.exists(env_path))
+    load_dotenv(env_path)
 
 
 # Main settings.
-BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS').split()
 DEBUG = True
@@ -11,14 +24,19 @@ DEBUG = True
 
 # Application definition.
 INSTALLED_APPS = [
+    # Django.
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Third-party.
     'rest_framework',
-    # TODO: Add apps.
+
+    # Local.
+
 ]
 
 MIDDLEWARE = [
@@ -56,7 +74,7 @@ WSGI_APPLICATION = 'foodgram.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME', 'django'),
+        'NAME': os.getenv('POSTGRES_DB', 'django'),
         'USER': os.getenv('POSTGRES_USER', 'postgres'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'postgres'),
         'HOST': os.getenv('DB_HOST', 'localhost'),
@@ -91,7 +109,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images).
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'backend_static/'
+STATIC_ROOT = BASE_DIR / 'static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media/'
 
