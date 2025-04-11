@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+from datetime import timedelta
 
 
 # Set the project root directory.
@@ -10,9 +11,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Load environment variables if running locally.
 if not os.getenv('IS_DOCKER'):
     # 'IS_DOCKER' will exist only if running in Docker.
-    # WARNING: If running locally, you should manually set up the PSQL.
+    # WARNING: If running locally, SQLite will be used.
     env_path = BASE_DIR / '../../infra/.env'
-    print(BASE_DIR, '\n', env_path, '\nexists:', os.path.exists(env_path))
     load_dotenv(env_path)
 
 
@@ -33,10 +33,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Third-party.
-    'rest_framework',
+    'rest_framework',  # API Framework.
+    'djoser',          # Authentication.
 
     # Local.
-
+    'users',
+    # 'recipes',
 ]
 
 MIDDLEWARE = [
@@ -71,6 +73,7 @@ WSGI_APPLICATION = 'foodgram.wsgi.application'
 
 
 # Database definition.
+# Set up PSQL if running in Docker else use SQLite.
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -80,10 +83,17 @@ DATABASES = {
         'HOST': os.getenv('DB_HOST', 'localhost'),
         'PORT': os.getenv('DB_PORT', '5432')
     }
+} if os.getenv('IS_DOCKER') else {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
 
-# Password validation.
+
+# Authentication.
+AUTH_USER_MODEL = 'users.CustomUser'
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -124,11 +134,14 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
-        # TODO: Migrate to djoser.
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_PAGINATION_CLASS': [
         'rest_framework.pagination.PageNumberPagination',
     ],
     'PAGE_SIZE': 10,
+}
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    'AUTH_HEADER_TYPES': ('Bearer',),
 }

@@ -11,7 +11,7 @@ COPY . .
 CMD gunicorn \
     --bind 0:8000 \
     --access-logfile - \
-    --access-logformat '%(t)s %(h)s %(s)s "%(r)s"' \
+    --access-logformat '%(t)s %(s)s "%(r)s" %(h)s' \
     --error-logfile - \
     --log-level info \
     --chdir foodgram \
