@@ -8,4 +8,11 @@ RUN pip install --upgrade pip && \
 
 COPY . .
 
-CMD ["gunicorn", "--bind", "0:8000", "--chdir", "foodgram", "foodgram.wsgi:application"]
+CMD gunicorn \
+    --bind 0:8000 \
+    --access-logfile - \
+    --access-logformat '%(t)s %(h)s %(s)s "%(r)s"' \
+    --error-logfile - \
+    --log-level info \
+    --chdir foodgram \
+    foodgram.wsgi:application
