@@ -61,3 +61,45 @@ class CustomUser(AbstractUser):
 
     def get_short_name(self):
         return self.first_name
+
+
+
+class Subscription(models.Model):
+    """A user-to-author subscription model."""
+
+    author = models.ForeignKey(
+        CustomUser,
+        on_delete=models.CASCADE,
+        related_name='followers',
+        verbose_name=_('Автор'),
+        help_text=_('Автор, на которого подписан пользователь.'),
+    )
+    subscriber = models.ForeignKey(
+        CustomUser,
+        on_delete=models.CASCADE,
+        related_name='subscriptions',
+        verbose_name=_('Подписчик'),
+        help_text=_('Пользователь, подписанный на автора.'),
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name=_('Дата подписки')
+    )
+
+    class Meta:
+        verbose_name = _('Подписка')
+        verbose_name_plural = _('Подписки')
+        constraints = [
+            models.UniqueConstraint(
+                fields=['subscriber', 'author'],
+                name='uq_subscription_subscriber_author'
+            ),
+            models.CheckConstraint(
+                check=~models.Q(subscriber=models.F('author')),
+                name='check_subscription_prevent_self_subscription'
+            )
+        ]
+        ordering = ('author__username',)
+
+    def __str__(self):
+        return f'{self.subscriber} подписан на {self.author}'
