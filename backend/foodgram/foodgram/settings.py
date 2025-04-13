@@ -38,7 +38,7 @@ INSTALLED_APPS = [
 
     # Local.
     'users',
-    # 'recipes',
+    'recipes',
 ]
 
 MIDDLEWARE = [

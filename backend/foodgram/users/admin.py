@@ -56,7 +56,7 @@ class CustomUserAdmin(UserAdmin):
             'fields': ('email', 'username', 'password')}
         ),
         (_('Персональные данные'), {
-            'fields': ('first_name', 'last_name', 'profile_picture',
+            'fields': ('first_name', 'last_name', 'avatar',
                        'last_login', 'date_joined'),
         }),
         (_('Права'), {

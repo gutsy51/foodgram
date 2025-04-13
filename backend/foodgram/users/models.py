@@ -17,16 +17,20 @@ class CustomUser(AbstractUser):
 
     username = models.CharField(
         verbose_name=_('Имя пользователя'),
-        max_length=32,
+        max_length=150,
         unique=True,
         db_index=True,
         validators=[username_validator],
     )
-    email = models.EmailField(verbose_name=_('E-Mail'), unique=True)
-    first_name = models.CharField(verbose_name=_('Имя'), max_length=64)
-    last_name = models.CharField(verbose_name=_('Фамилия'), max_length=64)
-    profile_picture = models.ImageField(
-        verbose_name=_('Фотография'),
+    email = models.EmailField(
+        verbose_name=_('E-Mail'),
+        max_length=254,
+        unique=True
+    )
+    first_name = models.CharField(verbose_name=_('Имя'), max_length=150)
+    last_name = models.CharField(verbose_name=_('Фамилия'), max_length=150)
+    avatar = models.ImageField(
+        verbose_name=_('Аватар'),
         upload_to='users/profile_pictures',
         blank=True
     )
