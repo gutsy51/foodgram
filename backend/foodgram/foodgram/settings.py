@@ -19,7 +19,7 @@ if not os.getenv('IS_DOCKER'):
 # Main settings.
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS').split()
-DEBUG = True
+DEBUG = os.getenv('DJANGO_DEBUG', 'True') == 'True'
 
 
 # Application definition.
@@ -33,17 +33,21 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Third-party.
-    'rest_framework',  # API Framework.
-    'djoser',          # Authentication.
+    'rest_framework',            # API Framework.
+    'rest_framework.authtoken',  # Auth Token.
+    'djoser',                    # Authentication Framework.
+    'corsheaders',               # CORS.
 
     # Local.
-    'users',
-    'recipes',
+    'users.apps.UsersConfig',
+    'recipes.apps.RecipesConfig',
+    'api.apps.ApiConfig',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',  # CORS.
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -128,20 +132,39 @@ MEDIA_ROOT = BASE_DIR / 'media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# REST API definition.
+# REST API & Djoser definition.
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
     ],
-    'DEFAULT_PAGINATION_CLASS': [
+    'DEFAULT_THROTTLE_RATES': {
+        'user': '100/hour',
+    },
+    'DEFAULT_PAGINATION_CLASS':
         'rest_framework.pagination.PageNumberPagination',
-    ],
-    'PAGE_SIZE': 10,
+    'PAGE_SIZE': 6,
 }
-SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
-    'AUTH_HEADER_TYPES': ('Bearer',),
+DJOSER = {
+    'LOGIN_FIELD': 'email',
+    'PASSWORD_CHANGED_EMAIL_CONFIRMATION': False,
+    # It'd be better to set True, but the specification is the specification.
+    # 'USER_CREATE_PASSWORD_RETYPE': True,
+    # 'SET_PASSWORD_RETYPE': True,
+    'HIDE_USERS': False,  # If true, `user_list` will return only CurrentUser.
+    'SEND_ACTIVATION_EMAIL': False,
+    'SERIALIZERS': {
+        'user': 'api.v1.serializers.users.CustomUserSerializer',
+        'current_user': 'api.v1.serializers.users.CustomUserSerializer',
+        'user_create': 'api.v1.serializers.users.CustomUserCreateSerializer',
+    },
+    'PERMISSIONS': {
+        'user': ['rest_framework.permissions.IsAuthenticatedOrReadOnly'],
+        'user_list': ['rest_framework.permissions.AllowAny'],
+    },
 }
+
+# CORS allowed origins definition.
+CORS_ALLOWED_ORIGINS = os.getenv('DJANGO_CORS_ALLOWED_ORIGINS', '').split()
