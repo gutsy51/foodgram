@@ -35,6 +35,7 @@ services:
     volumes:
       - ../backend/foodgram:/app/foodgram/ # Hot-reload.
       - back_static:/app/foodgram/static/  # Static files.
+      - back_media:/app/foodgram/media/    # Media files.
     depends_on:
       - postgres
     networks:

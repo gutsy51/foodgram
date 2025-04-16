@@ -1,434 +1,774 @@
 [
-  {
-    "model": "auth.permission",
-    "pk": 1,
-    "fields": {
-      "name": "Can add log entry",
-      "content_type": 1,
-      "codename": "add_logentry"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 2,
-    "fields": {
-      "name": "Can change log entry",
-      "content_type": 1,
-      "codename": "change_logentry"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 3,
-    "fields": {
-      "name": "Can delete log entry",
-      "content_type": 1,
-      "codename": "delete_logentry"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 4,
-    "fields": {
-      "name": "Can view log entry",
-      "content_type": 1,
-      "codename": "view_logentry"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 5,
-    "fields": {
-      "name": "Can add permission",
-      "content_type": 2,
-      "codename": "add_permission"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 6,
-    "fields": {
-      "name": "Can change permission",
-      "content_type": 2,
-      "codename": "change_permission"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 7,
-    "fields": {
-      "name": "Can delete permission",
-      "content_type": 2,
-      "codename": "delete_permission"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 8,
-    "fields": {
-      "name": "Can view permission",
-      "content_type": 2,
-      "codename": "view_permission"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 9,
-    "fields": {
-      "name": "Can add group",
-      "content_type": 3,
-      "codename": "add_group"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 10,
-    "fields": {
-      "name": "Can change group",
-      "content_type": 3,
-      "codename": "change_group"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 11,
-    "fields": {
-      "name": "Can delete group",
-      "content_type": 3,
-      "codename": "delete_group"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 12,
-    "fields": {
-      "name": "Can view group",
-      "content_type": 3,
-      "codename": "view_group"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 13,
-    "fields": {
-      "name": "Can add content type",
-      "content_type": 4,
-      "codename": "add_contenttype"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 14,
-    "fields": {
-      "name": "Can change content type",
-      "content_type": 4,
-      "codename": "change_contenttype"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 15,
-    "fields": {
-      "name": "Can delete content type",
-      "content_type": 4,
-      "codename": "delete_contenttype"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 16,
-    "fields": {
-      "name": "Can view content type",
-      "content_type": 4,
-      "codename": "view_contenttype"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 17,
-    "fields": {
-      "name": "Can add session",
-      "content_type": 5,
-      "codename": "add_session"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 18,
-    "fields": {
-      "name": "Can change session",
-      "content_type": 5,
-      "codename": "change_session"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 19,
-    "fields": {
-      "name": "Can delete session",
-      "content_type": 5,
-      "codename": "delete_session"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 20,
-    "fields": {
-      "name": "Can view session",
-      "content_type": 5,
-      "codename": "view_session"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 21,
-    "fields": {
-      "name": "Can add Пользователь",
-      "content_type": 6,
-      "codename": "add_customuser"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 22,
-    "fields": {
-      "name": "Can change Пользователь",
-      "content_type": 6,
-      "codename": "change_customuser"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 23,
-    "fields": {
-      "name": "Can delete Пользователь",
-      "content_type": 6,
-      "codename": "delete_customuser"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 24,
-    "fields": {
-      "name": "Can view Пользователь",
-      "content_type": 6,
-      "codename": "view_customuser"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 25,
-    "fields": {
-      "name": "Can add Подписка",
-      "content_type": 7,
-      "codename": "add_subscription"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 26,
-    "fields": {
-      "name": "Can change Подписка",
-      "content_type": 7,
-      "codename": "change_subscription"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 27,
-    "fields": {
-      "name": "Can delete Подписка",
-      "content_type": 7,
-      "codename": "delete_subscription"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 28,
-    "fields": {
-      "name": "Can view Подписка",
-      "content_type": 7,
-      "codename": "view_subscription"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 29,
-    "fields": {
-      "name": "Can add Ингредиент",
-      "content_type": 8,
-      "codename": "add_ingredient"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 30,
-    "fields": {
-      "name": "Can change Ингредиент",
-      "content_type": 8,
-      "codename": "change_ingredient"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 31,
-    "fields": {
-      "name": "Can delete Ингредиент",
-      "content_type": 8,
-      "codename": "delete_ingredient"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 32,
-    "fields": {
-      "name": "Can view Ингредиент",
-      "content_type": 8,
-      "codename": "view_ingredient"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 33,
-    "fields": {
-      "name": "Can add Рецепт",
-      "content_type": 9,
-      "codename": "add_recipe"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 34,
-    "fields": {
-      "name": "Can change Рецепт",
-      "content_type": 9,
-      "codename": "change_recipe"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 35,
-    "fields": {
-      "name": "Can delete Рецепт",
-      "content_type": 9,
-      "codename": "delete_recipe"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 36,
-    "fields": {
-      "name": "Can view Рецепт",
-      "content_type": 9,
-      "codename": "view_recipe"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 37,
-    "fields": {
-      "name": "Can add Ингредиент рецепта",
-      "content_type": 10,
-      "codename": "add_recipeingredient"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 38,
-    "fields": {
-      "name": "Can change Ингредиент рецепта",
-      "content_type": 10,
-      "codename": "change_recipeingredient"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 39,
-    "fields": {
-      "name": "Can delete Ингредиент рецепта",
-      "content_type": 10,
-      "codename": "delete_recipeingredient"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 40,
-    "fields": {
-      "name": "Can view Ингредиент рецепта",
-      "content_type": 10,
-      "codename": "view_recipeingredient"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 41,
-    "fields": {
-      "name": "Can add Список покупок",
-      "content_type": 11,
-      "codename": "add_shoppingcart"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 42,
-    "fields": {
-      "name": "Can change Список покупок",
-      "content_type": 11,
-      "codename": "change_shoppingcart"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 43,
-    "fields": {
-      "name": "Can delete Список покупок",
-      "content_type": 11,
-      "codename": "delete_shoppingcart"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 44,
-    "fields": {
-      "name": "Can view Список покупок",
-      "content_type": 11,
-      "codename": "view_shoppingcart"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 45,
-    "fields": {
-      "name": "Can add Избранное",
-      "content_type": 12,
-      "codename": "add_favorite"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 46,
-    "fields": {
-      "name": "Can change Избранное",
-      "content_type": 12,
-      "codename": "change_favorite"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 47,
-    "fields": {
-      "name": "Can delete Избранное",
-      "content_type": 12,
-      "codename": "delete_favorite"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 48,
-    "fields": {
-      "name": "Can view Избранное",
-      "content_type": 12,
-      "codename": "view_favorite"
-    }
+{
+  "model": "admin.logentry",
+  "pk": 1,
+  "fields": {
+    "action_time": "2025-04-11T05:35:38.402Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "1",
+    "object_repr": "admin (bestcom5055@gmail.com)",
+    "action_flag": 2,
+    "change_message": "[]"
   }
+},
+{
+  "model": "admin.logentry",
+  "pk": 2,
+  "fields": {
+    "action_time": "2025-04-14T00:09:10.267Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "2",
+    "object_repr": "gutsy (bestcom4747@gmail.com)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 3,
+  "fields": {
+    "action_time": "2025-04-14T00:10:18.828Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "2",
+    "object_repr": "gutsy (bestcom4747@gmail.com)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"\\u0421\\u0442\\u0430\\u0442\\u0443\\u0441 \\u0430\\u0434\\u043c\\u0438\\u043d\\u0438\\u0441\\u0442\\u0440\\u0430\\u0442\\u043e\\u0440\\u0430\", \"User permissions\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 4,
+  "fields": {
+    "action_time": "2025-04-14T00:10:51.148Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "3",
+    "object_repr": "vanek2007 (ivan@example.com)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 5,
+  "fields": {
+    "action_time": "2025-04-14T00:11:27.717Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "4",
+    "object_repr": "anna (anna@example.com)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 6,
+  "fields": {
+    "action_time": "2025-04-14T00:12:02.058Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "4",
+    "object_repr": "anna (anna@example.com)",
+    "action_flag": 2,
+    "change_message": "[{\"added\": {\"name\": \"\\u041f\\u043e\\u0434\\u043f\\u0438\\u0441\\u043a\\u0430\", \"object\": \"anna (anna@example.com) \\u043f\\u043e\\u0434\\u043f\\u0438\\u0441\\u0430\\u043d \\u043d\\u0430 gutsy (bestcom4747@gmail.com)\"}}, {\"added\": {\"name\": \"\\u041f\\u043e\\u0434\\u043f\\u0438\\u0441\\u043a\\u0430\", \"object\": \"anna (anna@example.com) \\u043f\\u043e\\u0434\\u043f\\u0438\\u0441\\u0430\\u043d \\u043d\\u0430 admin (bestcom5055@gmail.com)\"}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 7,
+  "fields": {
+    "action_time": "2025-04-14T00:12:17.729Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "4",
+    "object_repr": "anna (anna@example.com)",
+    "action_flag": 2,
+    "change_message": "[{\"added\": {\"name\": \"\\u041f\\u043e\\u0434\\u043f\\u0438\\u0441\\u043a\\u0430\", \"object\": \"vanek2007 (ivan@example.com) \\u043f\\u043e\\u0434\\u043f\\u0438\\u0441\\u0430\\u043d \\u043d\\u0430 anna (anna@example.com)\"}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 8,
+  "fields": {
+    "action_time": "2025-04-14T00:12:59.130Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "1",
+    "object_repr": "Мука пшеничная (г)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 9,
+  "fields": {
+    "action_time": "2025-04-14T00:13:08.250Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "2",
+    "object_repr": "Яйцо Куриное (шт)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 10,
+  "fields": {
+    "action_time": "2025-04-14T00:13:13.268Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "3",
+    "object_repr": "Молоко (л)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 11,
+  "fields": {
+    "action_time": "2025-04-14T00:13:18.762Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "4",
+    "object_repr": "Молоко (г)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 12,
+  "fields": {
+    "action_time": "2025-04-14T00:13:25.255Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "5",
+    "object_repr": "Сахар (г)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 13,
+  "fields": {
+    "action_time": "2025-04-14T00:13:28.001Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "6",
+    "object_repr": "Соль (г)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 14,
+  "fields": {
+    "action_time": "2025-04-14T00:13:37.086Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "7",
+    "object_repr": "Помидор (шт)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 15,
+  "fields": {
+    "action_time": "2025-04-14T00:13:44.722Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "8",
+    "object_repr": "Лук репчатый (шт)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 16,
+  "fields": {
+    "action_time": "2025-04-14T00:13:52.215Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "9",
+    "object_repr": "Куриное филе (г)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 17,
+  "fields": {
+    "action_time": "2025-04-14T00:13:57.050Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "10",
+    "object_repr": "Вода (л)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 18,
+  "fields": {
+    "action_time": "2025-04-14T00:14:05.100Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "11",
+    "object_repr": "Пиво (мл)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 19,
+  "fields": {
+    "action_time": "2025-04-14T00:14:20.548Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "12",
+    "object_repr": "Каша гречневая (г)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 20,
+  "fields": {
+    "action_time": "2025-04-14T00:17:30.398Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "13",
+    "object_repr": "Хлопья Несквик (г)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 21,
+  "fields": {
+    "action_time": "2025-04-14T00:18:06.875Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "1",
+    "object_repr": "Несквик с пивом",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}, {\"added\": {\"name\": \"\\u0418\\u043d\\u0433\\u0440\\u0435\\u0434\\u0438\\u0435\\u043d\\u0442 \\u0440\\u0435\\u0446\\u0435\\u043f\\u0442\\u0430\", \"object\": \"RecipeIngredient object (1)\"}}, {\"added\": {\"name\": \"\\u0418\\u043d\\u0433\\u0440\\u0435\\u0434\\u0438\\u0435\\u043d\\u0442 \\u0440\\u0435\\u0446\\u0435\\u043f\\u0442\\u0430\", \"object\": \"RecipeIngredient object (2)\"}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 22,
+  "fields": {
+    "action_time": "2025-04-14T00:23:02.880Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "1",
+    "object_repr": "Несквик с пивом",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 23,
+  "fields": {
+    "action_time": "2025-04-14T00:24:17.676Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "14",
+    "object_repr": "Перец (г)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 24,
+  "fields": {
+    "action_time": "2025-04-14T00:24:42.883Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "2",
+    "object_repr": "Куриные отбивные",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}, {\"added\": {\"name\": \"\\u0418\\u043d\\u0433\\u0440\\u0435\\u0434\\u0438\\u0435\\u043d\\u0442 \\u0440\\u0435\\u0446\\u0435\\u043f\\u0442\\u0430\", \"object\": \"RecipeIngredient object (3)\"}}, {\"added\": {\"name\": \"\\u0418\\u043d\\u0433\\u0440\\u0435\\u0434\\u0438\\u0435\\u043d\\u0442 \\u0440\\u0435\\u0446\\u0435\\u043f\\u0442\\u0430\", \"object\": \"RecipeIngredient object (4)\"}}, {\"added\": {\"name\": \"\\u0418\\u043d\\u0433\\u0440\\u0435\\u0434\\u0438\\u0435\\u043d\\u0442 \\u0440\\u0435\\u0446\\u0435\\u043f\\u0442\\u0430\", \"object\": \"RecipeIngredient object (5)\"}}, {\"added\": {\"name\": \"\\u0418\\u043d\\u0433\\u0440\\u0435\\u0434\\u0438\\u0435\\u043d\\u0442 \\u0440\\u0435\\u0446\\u0435\\u043f\\u0442\\u0430\", \"object\": \"RecipeIngredient object (6)\"}}, {\"added\": {\"name\": \"\\u0418\\u043d\\u0433\\u0440\\u0435\\u0434\\u0438\\u0435\\u043d\\u0442 \\u0440\\u0435\\u0446\\u0435\\u043f\\u0442\\u0430\", \"object\": \"RecipeIngredient object (7)\"}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 25,
+  "fields": {
+    "action_time": "2025-04-14T00:25:22.973Z",
+    "user": 1,
+    "content_type": 11,
+    "object_id": "1",
+    "object_repr": "2 - 1",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 26,
+  "fields": {
+    "action_time": "2025-04-14T00:25:30.962Z",
+    "user": 1,
+    "content_type": 12,
+    "object_id": "1",
+    "object_repr": "2 - 1",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 27,
+  "fields": {
+    "action_time": "2025-04-14T00:25:36.526Z",
+    "user": 1,
+    "content_type": 12,
+    "object_id": "2",
+    "object_repr": "4 - 2",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 28,
+  "fields": {
+    "action_time": "2025-04-14T00:25:41.914Z",
+    "user": 1,
+    "content_type": 11,
+    "object_id": "2",
+    "object_repr": "3 - 2",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 29,
+  "fields": {
+    "action_time": "2025-04-16T03:12:02.750Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "5",
+    "object_repr": "vasya.ivanov (vivanov@yandex.ru)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "r4pdirwi02aitmyoj6oudikept68db7h",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hAYKlCX7nsGMsyAVA0kpV0Z765NutDtf-_9lwi4rSVsPS1hZnERWpx-t4j0SHUHfMd6a5JaXZc5yl2RB-1yapye18P9OyjYy7f2nryxjpVzCUFHZEfMyZOO42CNgUwuI2QFzNoyDFaBOo-owRhSGMX7A-1FN-o:1u36Rk:N_2zpD1Se8t1T_mrUjXbml9-UFt1grMXM_4YXJj_0B8",
+    "expire_date": "2025-04-25T04:56:56.947Z"
+  }
+},
+{
+  "model": "authtoken.token",
+  "pk": "886d0a9d1fec8c0b4b9f59966264785da2d32214",
+  "fields": {
+    "user": 6,
+    "created": "2025-04-15T22:33:53.640Z"
+  }
+},
+{
+  "model": "users.customuser",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$Djarh1SA9AvwgZ3z3aHBmc$CGM5bucaBVQK4Gt6RXgR8n7b2nSpp6t/iNJX9PySfIg=",
+    "last_login": "2025-04-11T04:56:56.942Z",
+    "is_superuser": true,
+    "username": "admin",
+    "email": "bestcom5055@gmail.com",
+    "first_name": "name",
+    "last_name": "lastname",
+    "avatar": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-04-11T04:55:44.116Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.customuser",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$frrKoWFSSL9Ff0h30NfcVM$Vanj7flMoJxZxhyzyzQcjuaWEDuf9VRcB4DlUbhYkgE=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "gutsy",
+    "email": "bestcom4747@gmail.com",
+    "first_name": "Валерий",
+    "last_name": "Полуянов",
+    "avatar": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-04-14T00:09:09.791Z",
+    "groups": [],
+    "user_permissions": [
+      1,
+      4,
+      40,
+      44,
+      24,
+      28
+    ]
+  }
+},
+{
+  "model": "users.customuser",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$oRxlwP2Ryp81x6yRyRlo1F$taatMK7FnBf4mH+Gs/bLP6wBpdxLEF5S/jsuuFlSdGI=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vanek2007",
+    "email": "ivan@example.com",
+    "first_name": "Иван",
+    "last_name": "Иванов",
+    "avatar": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-04-14T00:10:50.644Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.customuser",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$0pUhavlcrn9n6bbD4qd4JT$0qVQrTkykjRMDp98D3N72T4ItLynhMd14blT3ty/7TU=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "anna",
+    "email": "anna@example.com",
+    "first_name": "Анна",
+    "last_name": "Кузнецова",
+    "avatar": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-04-14T00:11:27.176Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.customuser",
+  "pk": 6,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$1p2QSH2b3G2CFsejRdo5zT$qTF+0SATCLBaVRssRbCXmhYAlG6un9QlWH6R8MkHJK0=",
+    "last_login": "2025-04-16T02:49:53.876Z",
+    "is_superuser": false,
+    "username": "second-user",
+    "email": "second_user@email.org",
+    "first_name": "Андрей",
+    "last_name": "Макаревский",
+    "avatar": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-04-15T22:33:51.855Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.customuser",
+  "pk": 7,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$QI6KGhdeH97M6aKtU2eYAF$+jJk0WtvI2V43s8ttw65cxQzzFtLXmO6psj+rfCn2x8=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "third-user-username",
+    "email": "third-user@user.ru",
+    "first_name": "Гордон",
+    "last_name": "Рамзиков",
+    "avatar": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-04-15T22:33:52.326Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.subscription",
+  "pk": 1,
+  "fields": {
+    "author": 2,
+    "subscriber": 4,
+    "created_at": "2025-04-14T00:12:02.058Z"
+  }
+},
+{
+  "model": "users.subscription",
+  "pk": 2,
+  "fields": {
+    "author": 1,
+    "subscriber": 4,
+    "created_at": "2025-04-14T00:12:02.058Z"
+  }
+},
+{
+  "model": "users.subscription",
+  "pk": 3,
+  "fields": {
+    "author": 4,
+    "subscriber": 3,
+    "created_at": "2025-04-14T00:12:17.728Z"
+  }
+},
+{
+  "model": "recipes.ingredient",
+  "pk": 1,
+  "fields": {
+    "name": "Мука пшеничная",
+    "measurement_unit": "г"
+  }
+},
+{
+  "model": "recipes.ingredient",
+  "pk": 2,
+  "fields": {
+    "name": "Яйцо Куриное",
+    "measurement_unit": "шт"
+  }
+},
+{
+  "model": "recipes.ingredient",
+  "pk": 3,
+  "fields": {
+    "name": "Молоко",
+    "measurement_unit": "л"
+  }
+},
+{
+  "model": "recipes.ingredient",
+  "pk": 4,
+  "fields": {
+    "name": "Молоко",
+    "measurement_unit": "г"
+  }
+},
+{
+  "model": "recipes.ingredient",
+  "pk": 5,
+  "fields": {
+    "name": "Сахар",
+    "measurement_unit": "г"
+  }
+},
+{
+  "model": "recipes.ingredient",
+  "pk": 6,
+  "fields": {
+    "name": "Соль",
+    "measurement_unit": "г"
+  }
+},
+{
+  "model": "recipes.ingredient",
+  "pk": 7,
+  "fields": {
+    "name": "Помидор",
+    "measurement_unit": "шт"
+  }
+},
+{
+  "model": "recipes.ingredient",
+  "pk": 8,
+  "fields": {
+    "name": "Лук репчатый",
+    "measurement_unit": "шт"
+  }
+},
+{
+  "model": "recipes.ingredient",
+  "pk": 9,
+  "fields": {
+    "name": "Куриное филе",
+    "measurement_unit": "г"
+  }
+},
+{
+  "model": "recipes.ingredient",
+  "pk": 10,
+  "fields": {
+    "name": "Вода",
+    "measurement_unit": "л"
+  }
+},
+{
+  "model": "recipes.ingredient",
+  "pk": 11,
+  "fields": {
+    "name": "Пиво",
+    "measurement_unit": "мл"
+  }
+},
+{
+  "model": "recipes.ingredient",
+  "pk": 12,
+  "fields": {
+    "name": "Каша гречневая",
+    "measurement_unit": "г"
+  }
+},
+{
+  "model": "recipes.ingredient",
+  "pk": 13,
+  "fields": {
+    "name": "Хлопья Несквик",
+    "measurement_unit": "г"
+  }
+},
+{
+  "model": "recipes.ingredient",
+  "pk": 14,
+  "fields": {
+    "name": "Перец",
+    "measurement_unit": "г"
+  }
+},
+{
+  "model": "recipes.recipeingredient",
+  "pk": 1,
+  "fields": {
+    "recipe": 1,
+    "ingredient": 11,
+    "amount": 300
+  }
+},
+{
+  "model": "recipes.recipeingredient",
+  "pk": 2,
+  "fields": {
+    "recipe": 1,
+    "ingredient": 13,
+    "amount": 200
+  }
+},
+{
+  "model": "recipes.recipeingredient",
+  "pk": 3,
+  "fields": {
+    "recipe": 2,
+    "ingredient": 9,
+    "amount": 500
+  }
+},
+{
+  "model": "recipes.recipeingredient",
+  "pk": 4,
+  "fields": {
+    "recipe": 2,
+    "ingredient": 6,
+    "amount": 10
+  }
+},
+{
+  "model": "recipes.recipeingredient",
+  "pk": 5,
+  "fields": {
+    "recipe": 2,
+    "ingredient": 14,
+    "amount": 2
+  }
+},
+{
+  "model": "recipes.recipeingredient",
+  "pk": 6,
+  "fields": {
+    "recipe": 2,
+    "ingredient": 2,
+    "amount": 3
+  }
+},
+{
+  "model": "recipes.recipeingredient",
+  "pk": 7,
+  "fields": {
+    "recipe": 2,
+    "ingredient": 1,
+    "amount": 25
+  }
+},
+{
+  "model": "recipes.recipe",
+  "pk": 1,
+  "fields": {
+    "name": "Несквик с пивом",
+    "author": 2,
+    "text": "Мне откровенно лень генерировать описания, поэтому Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+    "cooking_time": 2,
+    "image": "recipes/images/maxresdefault.jpg",
+    "created_at": "2025-04-14T00:18:06.872Z"
+  }
+},
+{
+  "model": "recipes.recipe",
+  "pk": 2,
+  "fields": {
+    "name": "Куриные отбивные",
+    "author": 4,
+    "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+    "cooking_time": 25,
+    "image": "recipes/images/sm_577787.jpg",
+    "created_at": "2025-04-14T00:24:42.880Z"
+  }
+},
+{
+  "model": "recipes.favorite",
+  "pk": 1,
+  "fields": {
+    "user": 2,
+    "recipe": 1
+  }
+},
+{
+  "model": "recipes.favorite",
+  "pk": 2,
+  "fields": {
+    "user": 4,
+    "recipe": 2
+  }
+},
+{
+  "model": "recipes.shoppingcart",
+  "pk": 1,
+  "fields": {
+    "user": 2,
+    "recipe": 1
+  }
+},
+{
+  "model": "recipes.shoppingcart",
+  "pk": 2,
+  "fields": {
+    "user": 3,
+    "recipe": 2
+  }
+}
 ]
