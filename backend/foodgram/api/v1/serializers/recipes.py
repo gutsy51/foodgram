@@ -141,3 +141,10 @@ class RecipeSerializer(ser.ModelSerializer):
         instance.ingredients_amounts.all().delete()
         self.set_recipe_ingredients(instance, ingredients_data)
         return instance
+
+
+class ShortRecipeSerializer(ser.ModelSerializer):
+    """A shortened serializer for working with subscriptions and baskets."""
+    class Meta:
+        model = Recipe
+        fields = ('id', 'name', 'image', 'cooking_time')
