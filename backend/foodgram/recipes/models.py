@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -95,7 +96,6 @@ class Recipe(models.Model):
     image = models.ImageField(
         verbose_name=_('Изображение'),
         upload_to='recipes/images',
-        blank=True,
     )
     created_at = models.DateTimeField(
         verbose_name=_('Дата создания'),

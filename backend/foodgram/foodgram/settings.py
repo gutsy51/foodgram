@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     # Third-party.
     'rest_framework',            # API Framework.
     'rest_framework.authtoken',  # Auth Token.
+    'django_filters',            # Filters in API.
     'djoser',                    # Authentication Framework.
     'corsheaders',               # CORS.
 
@@ -135,16 +136,20 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # REST API & Djoser definition.
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ],
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.UserRateThrottle',
+        'rest_framework.throttling.AnonRateThrottle',
+    ],
     'DEFAULT_THROTTLE_RATES': {
         'user': '100/hour',
+        'anon': '50/hour',
     },
-    'DEFAULT_PAGINATION_CLASS':
-        'rest_framework.pagination.PageNumberPagination',
+    'DEFAULT_PAGINATION_CLASS': 'api.v1.pagination.PageNumberSizedPagination',
     'PAGE_SIZE': 6,
 }
 DJOSER = {

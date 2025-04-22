@@ -1,12 +1,9 @@
-import logging
-
 from django.http import Http404
 from django.utils.translation import gettext_lazy as _
 from djoser.views import UserViewSet
 from rest_framework.exceptions import NotFound
 from rest_framework.status import *
 from rest_framework.decorators import action
-from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -23,7 +20,6 @@ class CustomUserViewSet(UserViewSet):
     - `/subscriptions/` endpoint;
     - `{id}/subscribe/` endpoint.
     """
-    pagination_class = LimitOffsetPagination
 
     def get_object(self):
         """Just translate a 404 error."""
