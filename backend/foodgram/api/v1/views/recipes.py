@@ -145,3 +145,15 @@ class RecipeViewSet(ModelViewSet):
             as_attachment=True,
             content_type='text/plain'
         )
+
+    @action(
+        methods=('get',),
+        detail=True,
+        url_path='get-link',
+        url_name='get-link',
+    )
+    def get_link(self, request, pk):
+        """Return a link to the recipe."""
+        recipe = get_object_or_404(Recipe, pk=pk)
+        url = f'{request.get_host()}/recipes/{recipe.id}/'
+        return Response({'short-link': url}, status=status.HTTP_200_OK)

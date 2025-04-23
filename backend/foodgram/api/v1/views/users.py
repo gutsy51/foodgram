@@ -60,7 +60,7 @@ class CustomUserViewSet(UserViewSet):
         """Update and delete user`s avatar."""
         if request.method == 'PUT':
             if 'avatar' not in request.data:
-                return ValidationError({'avatar': _('Обязательное поле.')})
+                raise ValidationError({'avatar': _('Обязательное поле.')})
             serializer = self.get_serializer(
                 request.user, data=request.data, partial=True
             )
