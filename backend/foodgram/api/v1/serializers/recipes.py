@@ -1,8 +1,15 @@
+from django.contrib.auth import get_user_model
+from django.utils.translation import gettext_lazy as _
+
 from rest_framework import serializers as ser
+
 from drf_extra_fields.fields import Base64ImageField
 
 from recipes.models import Ingredient, RecipeIngredient, Recipe
 from api.v1.serializers.users import CustomUserSerializer
+
+
+User = get_user_model()
 
 
 class IngredientSerializer(ser.ModelSerializer):
@@ -90,7 +97,7 @@ class RecipeSerializer(ser.ModelSerializer):
     def validate_image(image):
         """Prevent empty image fields from being saved (i.e. {'image': ''})."""
         if not image:
-            raise ser.ValidationError({'image': 'Обязательное поле.'})
+            raise ser.ValidationError({'image': _('Обязательное поле.')})
         return image
 
     @staticmethod
@@ -100,18 +107,18 @@ class RecipeSerializer(ser.ModelSerializer):
         Will be called in Serializer.validate() method.
         """
         if not ingredients:
-            raise ser.ValidationError({'ingredients': 'Обязательное поле.'})
+            raise ser.ValidationError({'ingredients': _('Обязательное поле.')})
         ids = [x['ingredient'].id for x in ingredients]
         duplicate_ids = [x for x in ids if ids.count(x) > 1]
         if duplicate_ids:
             raise ser.ValidationError(
-                {'ingredients': f'Ингредиенты {duplicate_ids} повторяются.'}
+                {'ingredients': _(f'Ингредиенты {duplicate_ids} повторяются.')}
             )
         not_exist_ids = [x for x in ids
                          if not Ingredient.objects.filter(id=x).exists()]
         if not_exist_ids:
             raise ser.ValidationError(
-                {'ingredients': f'Не найден(ы) ингредиенты {not_exist_ids}.'}
+                {'ingredients': _(f'Не найден(ы) ингредиенты {not_exist_ids}.')}
             )
         return ingredients
 
@@ -148,3 +155,42 @@ class ShortRecipeSerializer(ser.ModelSerializer):
     class Meta:
         model = Recipe
         fields = ('id', 'name', 'image', 'cooking_time')
+
+
+class UserRecipesSerializer(CustomUserSerializer):
+    """A user with his recipes serializer.
+
+    Example:
+    {
+        'email': 'second_user@example.com',
+        'id': 2,
+        'username': 'second_user',
+        'first_name': 'Yuri',
+        'last_name': 'Tarded',
+        'is_subscribed': true,
+        'recipes': [{
+            'id': 1,
+            'name': 'Are you reading?',
+            'image': 'https://example.com/image.jpg',
+            'cooking_time': 66
+        }, ...],
+        'recipes_count': 1,
+        'avatar': 'https://example.com/image.jpg'
+    }
+    """
+    recipes = ser.SerializerMethodField()
+    recipes_count = ser.IntegerField(source='recipes.count', read_only=True)
+
+    class Meta:
+        model = User
+        fields = (
+            'email', 'id', 'username', 'first_name', 'last_name',
+            'is_subscribed', 'recipes', 'recipes_count', 'avatar'
+        )
+
+    def get_recipes(self, obj):
+        request = self.context.get('request')
+        recipes_limit = int(request.query_params.get('recipes_limit', '10000'))
+        return ShortRecipeSerializer(
+            obj.recipes.all()[:recipes_limit], many=True, context=self.context
+        ).data

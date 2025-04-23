@@ -3,6 +3,7 @@ from io import BytesIO
 from django.db.models import F, Sum
 from django.http import FileResponse
 from django.shortcuts import get_object_or_404
+from django.utils.translation import gettext_lazy as _
 
 from rest_framework import status
 from rest_framework.decorators import action
@@ -72,13 +73,13 @@ class RecipeViewSet(ModelViewSet):
                 user_id=user.id, recipe_id=recipe.id
             )
             if not is_created:
-                raise ValidationError('Рецепт уже в списке.')
+                raise ValidationError(_('Рецепт уже в списке.'))
             return Response(self.short_serializer_class(recipe).data,
                             status=HTTP_201_CREATED)
         elif request.method == 'DELETE':
             obj = model.objects.filter(user=user, recipe=recipe)
             if not obj.exists():
-                raise ValidationError('Рецепт не найден.')
+                raise ValidationError(_('Рецепт не найден.'))
             obj.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
 
