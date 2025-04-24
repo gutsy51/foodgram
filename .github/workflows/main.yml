@@ -51,8 +51,6 @@ jobs:
       - name: Run Postman Collection
         continue-on-error: true
         run: newman run ./postman_collection/foodgram.postman_collection.json --reporters cli
-      - name: Stop server
-        run: kill $(cat backend/server.pid)
 
   backend_build_and_push_to_docker_hub:
     name: Push backend Docker image to DockerHub
