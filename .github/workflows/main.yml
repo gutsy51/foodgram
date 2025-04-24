@@ -10,21 +10,40 @@ jobs:
     name: Run backend tests
     runs-on: ubuntu-latest
     steps:
+      # Preparation.
       - name: Check out the repo
         uses: actions/checkout@v4
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.13"
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r ./backend/requirements.txt --quiet
+
+      # Check PEP8 before actual tests.
       - name: Check code with flake8
         run: |
-          cd backend
+          cd ./backend/foodgram/
+          python -m pip install --upgrade pip
           pip install flake8 --no-cache-dir --quiet
           flake8 . --max-line-length=80
+
+      # Run testing server.
+      - name: Install dependencies
+        run: pip install -r ./backend/requirements.txt --quiet
+      - name: Set up environment
+        run: cp ./infra/.env.example ./infra/.env
+      - name: Migrate
+        run: python ./backend/foodgram/manage.py migrate
+      - name: Load example data
+        run: python ./backend/foodgram/manage.py loaddata ./backend/foodgram/db_example.json
+      - name: Start server
+        run: python ./backend/foodgram/manage.py runserver 127.0.0.1:8000
+      - name: Wait for server to be ready
+        run: |
+          echo "Waiting for server..."
+          sleep 10
+          curl --fail http://127.0.0.1:8000/api/ || (echo "Server not responding" && exit 1)
+
+      # Run API tests.
       - name: Install Newman
         run: npm install -g newman
       - name: Run Postman Collection
