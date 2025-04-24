@@ -10,7 +10,6 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.serializers import ValidationError
-from rest_framework.status import HTTP_201_CREATED
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
 from django_filters.rest_framework import DjangoFilterBackend
@@ -75,7 +74,7 @@ class RecipeViewSet(ModelViewSet):
             if not is_created:
                 raise ValidationError(_('Рецепт уже в списке.'))
             return Response(self.short_serializer_class(recipe).data,
-                            status=HTTP_201_CREATED)
+                            status=status.HTTP_201_CREATED)
         elif request.method == 'DELETE':
             obj = model.objects.filter(user=user, recipe=recipe)
             if not obj.exists():

@@ -4,7 +4,6 @@ from django.utils.translation import gettext_lazy as _
 from .models import CustomUser, Subscription
 
 
-
 @admin.register(Subscription)
 class SubscriptionAdmin(admin.ModelAdmin):
     list_display = ('author', 'subscriber', 'created_at')
@@ -54,7 +53,7 @@ class CustomUserAdmin(UserAdmin):
     fieldsets = (
         (None, {
             'fields': ('email', 'username', 'password')}
-        ),
+         ),
         (_('Персональные данные'), {
             'fields': ('first_name', 'last_name', 'avatar',
                        'last_login', 'date_joined'),

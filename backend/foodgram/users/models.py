@@ -67,7 +67,6 @@ class CustomUser(AbstractUser):
         return self.first_name
 
 
-
 class Subscription(models.Model):
     """A user-to-author subscription model."""
 

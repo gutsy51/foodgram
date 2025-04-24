@@ -4,8 +4,8 @@ from django.utils.translation import gettext_lazy as _
 
 from djoser.views import UserViewSet
 
+from rest_framework import status
 from rest_framework.exceptions import NotFound, ValidationError
-from rest_framework.status import *
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -67,12 +67,12 @@ class CustomUserViewSet(UserViewSet):
             serializer.is_valid(raise_exception=True)
             serializer.save()
             data = {'avatar': serializer.data['avatar']}
-            return Response(data, status=HTTP_200_OK)
+            return Response(data, status=status.HTTP_200_OK)
         elif request.method == 'DELETE':
             request.user.avatar.delete()
             request.user.avatar = None
             request.user.save()
-            return Response(status=HTTP_204_NO_CONTENT)
+            return Response(status=status.HTTP_204_NO_CONTENT)
 
     @action(
         methods=('get',),
@@ -111,11 +111,11 @@ class CustomUserViewSet(UserViewSet):
             serializer = UserRecipesSerializer(
                 author, context={'request': request}
             )
-            return Response(serializer.data, status=HTTP_201_CREATED)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         elif request.method == 'DELETE':
             obj = user.subscriptions.filter(author=author)
             if not obj.exists():
                 raise ValidationError(_('Вы не подписаны.'))
             obj.delete()
-            return Response(status=HTTP_204_NO_CONTENT)
+            return Response(status=status.HTTP_204_NO_CONTENT)

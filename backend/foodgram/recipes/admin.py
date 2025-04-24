@@ -16,13 +16,13 @@ class IngredientAdmin(admin.ModelAdmin):
     ordering = ('name',)
 
 
-
 class RecipeIngredientInline(admin.TabularInline):
     model = RecipeIngredient
     extra = 0
     verbose_name = _('Ингредиент рецепта')
     verbose_name_plural = _('Ингредиенты рецепта')
     fields = ('ingredient', 'amount')
+
 
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
@@ -41,6 +41,7 @@ class UserRecipeAdminMixin:
     list_display_links = ('user', 'recipe')
     search_fields = ('user__username', 'recipe__name')
 
+
 @admin.register(Favorite)
 class FavoriteAdmin(UserRecipeAdminMixin, admin.ModelAdmin):
     pass
@@ -50,8 +51,10 @@ class FavoriteAdmin(UserRecipeAdminMixin, admin.ModelAdmin):
 class ShoppingCartAdmin(UserRecipeAdminMixin, admin.ModelAdmin):
     pass
 
+
 # Expand the user admin-panel.
 admin.site.unregister(CustomUser)
+
 
 class FavoriteInline(admin.TabularInline):
     model = Favorite
@@ -59,11 +62,13 @@ class FavoriteInline(admin.TabularInline):
     verbose_name = _('Избранный рецепт')
     verbose_name_plural = _('Избранное')
 
+
 class ShoppingCartInline(admin.TabularInline):
     model = ShoppingCart
     extra = 0
     verbose_name = _('Рецепт в корзине')
     verbose_name_plural = _('Корзина покупок')
+
 
 @admin.register(CustomUser)
 class CustomUserAdmin(CustomUserAdmin):
