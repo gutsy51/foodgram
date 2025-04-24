@@ -35,8 +35,10 @@ jobs:
         run: python ./backend/foodgram/manage.py migrate
       - name: Load example data
         run: python ./backend/foodgram/manage.py loaddata ./backend/foodgram/db_example.json
-      - name: Start server
-        run: python ./backend/foodgram/manage.py runserver 127.0.0.1:8000
+      - name: Start server in background
+        run: |
+          cd ./backend/foodgram/
+          nohup python manage.py runserver 127.0.0.1:8000 &
       - name: Wait for server to be ready
         run: |
           echo "Waiting for server..."
@@ -47,9 +49,9 @@ jobs:
       - name: Install Newman
         run: npm install -g newman
       - name: Run Postman Collection
-        run: |
-          newman run ./postman_collection/foodgram.postman_collection.json \
-            --reporters cli
+        run: newman run ./postman_collection/foodgram.postman_collection.json --reporters cli
+      - name: Stop server
+        run: kill $(cat backend/server.pid)
 
   backend_build_and_push_to_docker_hub:
     name: Push backend Docker image to DockerHub
