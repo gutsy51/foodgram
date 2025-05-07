@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'corsheaders',               # CORS.
 
     # Local.
-    'users.apps.UsersConfig',
     'recipes.apps.RecipesConfig',
     'api.apps.ApiConfig',
 ]
@@ -96,7 +95,7 @@ DATABASES = {
 
 
 # Authentication.
-AUTH_USER_MODEL = 'users.CustomUser'
+AUTH_USER_MODEL = 'recipes.User'
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -147,21 +146,18 @@ REST_FRAMEWORK = {
         'user': '1000/hour',
         'anon': '200/hour',
     },
-    'DEFAULT_PAGINATION_CLASS': 'api.v1.pagination.PageNumberSizedPagination',
+    'DEFAULT_PAGINATION_CLASS': 'api.pagination.PageNumberSizedPagination',
     'PAGE_SIZE': 6,
 }
 DJOSER = {
     'LOGIN_FIELD': 'email',
     'PASSWORD_CHANGED_EMAIL_CONFIRMATION': False,
-    # It'd be better to set True, but the specification is the specification.
-    # 'USER_CREATE_PASSWORD_RETYPE': True,
-    # 'SET_PASSWORD_RETYPE': True,
     'HIDE_USERS': False,  # If true, `user_list` will return only CurrentUser.
     'SEND_ACTIVATION_EMAIL': False,
     'SERIALIZERS': {
-        'user': 'api.v1.serializers.users.CustomUserSerializer',
-        'current_user': 'api.v1.serializers.users.CustomUserSerializer',
-        'user_create': 'api.v1.serializers.users.CustomUserCreateSerializer',
+        'user': 'api.serializers.UserSerializer',
+        'current_user': 'api.serializers.UserSerializer',
+        'user_create': 'api.serializers.users.CustomUserCreateSerializer',
     },
     'PERMISSIONS': {
         'user': ['rest_framework.permissions.IsAuthenticatedOrReadOnly'],

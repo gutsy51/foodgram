@@ -1,15 +1,55 @@
+from djoser.serializers import (
+    UserSerializer as DjoserUserSerializer,
+    UserCreateSerializer as DjoserUserCreateSerializer
+)
 from django.contrib.auth import get_user_model
-from django.utils.translation import gettext_lazy as _
-
 from rest_framework import serializers as ser
-
 from drf_extra_fields.fields import Base64ImageField
 
 from recipes.models import Ingredient, RecipeIngredient, Recipe
-from api.v1.serializers.users import CustomUserSerializer
 
 
 User = get_user_model()
+
+
+class UserSerializer(DjoserUserSerializer):
+    """An extended djoser serializer to get users data.
+
+    This serializer is used when receiving information about user(s),
+    i.e. `/api/users/` and `/api/users/me/`.
+    """
+
+    is_subscribed = ser.SerializerMethodField()
+    avatar = Base64ImageField(required=False, allow_null=True)
+
+    class Meta:
+        model = User
+        fields = (
+            'email', 'id', 'username', 'first_name', 'last_name',
+            'is_subscribed', 'avatar',
+        )
+
+    def get_is_subscribed(self, obj):
+        request = self.context['request']
+        if request and request.user.is_authenticated:
+            return request.user.authors.filter(author=obj).exists()
+        return False
+
+
+class UserCreateSerializer(DjoserUserCreateSerializer):
+    """An extended djoser serializer to post users data
+
+    Used when registering new user or on password change.
+    """
+
+    class Meta:
+        model = User
+        fields = (
+            'email', 'id', 'username', 'first_name', 'last_name',
+            'password',
+        )
+        extra_kwargs = {'password': {'write_only': True}}
+
 
 
 class IngredientSerializer(ser.ModelSerializer):
@@ -64,7 +104,7 @@ class RecipeSerializer(ser.ModelSerializer):
     }
     """
 
-    author = CustomUserSerializer(read_only=True)
+    author = UserSerializer(read_only=True)
     ingredients = RecipeIngredientSerializer(
         source='ingredients_amounts', many=True,
     )
@@ -97,7 +137,7 @@ class RecipeSerializer(ser.ModelSerializer):
     def validate_image(image):
         """Prevent empty image fields from being saved (i.e. {'image': ''})."""
         if not image:
-            raise ser.ValidationError({'image': _('Обязательное поле.')})
+            raise ser.ValidationError({'image': 'Обязательное поле.'})
         return image
 
     @staticmethod
@@ -107,18 +147,18 @@ class RecipeSerializer(ser.ModelSerializer):
         Will be called in Serializer.validate() method.
         """
         if not ingredients:
-            raise ser.ValidationError({'ingredients': _('Обязательное поле.')})
+            raise ser.ValidationError({'ingredients': 'Обязательное поле.'})
         ids = [x['ingredient'].id for x in ingredients]
         duplicate_ids = [x for x in ids if ids.count(x) > 1]
         if duplicate_ids:
             raise ser.ValidationError(
-                {'ingredients': _(f'Ингредиенты {duplicate_ids} повторяются.')}
+                {'ingredients': f'Ингредиенты {duplicate_ids} повторяются.'}
             )
         not_exist_ids = [x for x in ids
                          if not Ingredient.objects.filter(id=x).exists()]
         if not_exist_ids:
             raise ser.ValidationError(
-                {'ingredients': _(f'Не найден(ы) ингредиенты {not_exist_ids}.')}
+                {'ingredients': f'Не найден(ы) ингредиенты {not_exist_ids}.'}
             )
         return ingredients
 
@@ -157,7 +197,7 @@ class ShortRecipeSerializer(ser.ModelSerializer):
         fields = ('id', 'name', 'image', 'cooking_time')
 
 
-class UserRecipesSerializer(CustomUserSerializer):
+class UserRecipesSerializer(DjoserUserSerializer):
     """A user with his recipes serializer.
 
     Example:
