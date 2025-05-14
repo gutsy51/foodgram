@@ -393,7 +393,7 @@
   }
 },
 {
-  "model": "users.customuser",
+  "model": "recipes.user",
   "pk": 1,
   "fields": {
     "password": "pbkdf2_sha256$870000$Djarh1SA9AvwgZ3z3aHBmc$CGM5bucaBVQK4Gt6RXgR8n7b2nSpp6t/iNJX9PySfIg=",
@@ -412,7 +412,7 @@
   }
 },
 {
-  "model": "users.customuser",
+  "model": "recipes.user",
   "pk": 2,
   "fields": {
     "password": "pbkdf2_sha256$870000$frrKoWFSSL9Ff0h30NfcVM$Vanj7flMoJxZxhyzyzQcjuaWEDuf9VRcB4DlUbhYkgE=",
@@ -438,7 +438,7 @@
   }
 },
 {
-  "model": "users.customuser",
+  "model": "recipes.user",
   "pk": 3,
   "fields": {
     "password": "pbkdf2_sha256$870000$oRxlwP2Ryp81x6yRyRlo1F$taatMK7FnBf4mH+Gs/bLP6wBpdxLEF5S/jsuuFlSdGI=",
@@ -457,7 +457,7 @@
   }
 },
 {
-  "model": "users.customuser",
+  "model": "recipes.user",
   "pk": 4,
   "fields": {
     "password": "pbkdf2_sha256$870000$0pUhavlcrn9n6bbD4qd4JT$0qVQrTkykjRMDp98D3N72T4ItLynhMd14blT3ty/7TU=",
@@ -476,7 +476,7 @@
   }
 },
 {
-  "model": "users.customuser",
+  "model": "recipes.user",
   "pk": 6,
   "fields": {
     "password": "pbkdf2_sha256$870000$1p2QSH2b3G2CFsejRdo5zT$qTF+0SATCLBaVRssRbCXmhYAlG6un9QlWH6R8MkHJK0=",
@@ -495,7 +495,7 @@
   }
 },
 {
-  "model": "users.customuser",
+  "model": "recipes.user",
   "pk": 7,
   "fields": {
     "password": "pbkdf2_sha256$870000$QI6KGhdeH97M6aKtU2eYAF$+jJk0WtvI2V43s8ttw65cxQzzFtLXmO6psj+rfCn2x8=",
@@ -514,30 +514,27 @@
   }
 },
 {
-  "model": "users.subscription",
+  "model": "recipes.subscription",
   "pk": 1,
   "fields": {
     "author": 2,
-    "subscriber": 4,
-    "created_at": "2025-04-14T00:12:02.058Z"
+    "subscriber": 4
   }
 },
 {
-  "model": "users.subscription",
+  "model": "recipes.subscription",
   "pk": 2,
   "fields": {
     "author": 1,
-    "subscriber": 4,
-    "created_at": "2025-04-14T00:12:02.058Z"
+    "subscriber": 4
   }
 },
 {
-  "model": "users.subscription",
+  "model": "recipes.subscription",
   "pk": 3,
   "fields": {
     "author": 4,
-    "subscriber": 3,
-    "created_at": "2025-04-14T00:12:17.728Z"
+    "subscriber": 3
   }
 },
 {
