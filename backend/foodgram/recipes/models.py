@@ -3,6 +3,11 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.db import models
 
+from foodgram.constants import (
+    USER_AVATAR_UPLOAD_TO, RECIPE_MIN_COOKING_TIME,
+    RECIPE_IMAGE_UPLOAD_TO, RECIPE_INGREDIENT_MIN_AMOUNT
+)
+
 
 # Users.
 class User(AbstractUser):
@@ -28,7 +33,7 @@ class User(AbstractUser):
     last_name = models.CharField(verbose_name='Фамилия', max_length=150)
     avatar = models.ImageField(
         verbose_name='Аватар',
-        upload_to='users/profile_pictures',
+        upload_to=USER_AVATAR_UPLOAD_TO,
         blank=True
     )
 
@@ -139,11 +144,11 @@ class Recipe(models.Model):
     text = models.TextField(verbose_name='Описание')
     cooking_time = models.PositiveSmallIntegerField(
         verbose_name='Время приготовления',
-        validators=[MinValueValidator(1),],
+        validators=[MinValueValidator(RECIPE_MIN_COOKING_TIME),],
     )
     image = models.ImageField(
         verbose_name='Изображение',
-        upload_to='recipes/images',
+        upload_to=RECIPE_IMAGE_UPLOAD_TO,
     )
     created_at = models.DateTimeField(
         verbose_name='Дата создания',
@@ -180,7 +185,7 @@ class RecipeIngredient(models.Model):
     )
     amount = models.PositiveIntegerField(
         verbose_name='Количество',
-        validators=[MinValueValidator(1),],
+        validators=[MinValueValidator(RECIPE_INGREDIENT_MIN_AMOUNT),],
     )
 
     class Meta:

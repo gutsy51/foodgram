@@ -43,7 +43,7 @@ class AbstractNumberFilter(SimpleListFilter):
     def lookups(self, request, model_admin):
         queryset = model_admin.get_queryset(request)
         avg = queryset.aggregate(avg=Avg(self.parameter_name))['avg'] or 1
-        n = int(avg * 0.75) or 1
+        n = int(avg * 0.75) or 1  # Set 1 and 2 if avg is 0.
         m = int(avg * 1.25) if n > 1 else 2
         return self._get_lookups(n, m)
 

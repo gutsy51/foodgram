@@ -2,6 +2,9 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
+from foodgram.constants import (
+    PAGE_SIZE_PRJCT, DRF_THROTTLE_RATES_USER, DRF_THROTTLE_RATES_ANON
+)
 
 # Set the project root directory.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -143,11 +146,11 @@ REST_FRAMEWORK = {
         'rest_framework.throttling.AnonRateThrottle',
     ],
     'DEFAULT_THROTTLE_RATES': {
-        'user': '1000/hour',
-        'anon': '200/hour',
+        'user': DRF_THROTTLE_RATES_USER,
+        'anon': DRF_THROTTLE_RATES_ANON,
     },
     'DEFAULT_PAGINATION_CLASS': 'api.pagination.PageNumberSizedPagination',
-    'PAGE_SIZE': 6,
+    'PAGE_SIZE': PAGE_SIZE_PRJCT,
 }
 DJOSER = {
     'LOGIN_FIELD': 'email',
@@ -157,7 +160,7 @@ DJOSER = {
     'SERIALIZERS': {
         'user': 'api.serializers.UserSerializer',
         'current_user': 'api.serializers.UserSerializer',
-        'user_create': 'api.serializers.users.CustomUserCreateSerializer',
+        'user_create': 'api.serializers.UserCreateSerializer',
     },
     'PERMISSIONS': {
         'user': ['rest_framework.permissions.IsAuthenticatedOrReadOnly'],
