@@ -24,7 +24,7 @@
 | Адрес                         | Описание              |
 |-------------------------------|-----------------------|
 | https://example.org/          | Главная страница      |
-| https://example.org/admin     | Панель администратора |
+| https://example.org/admin/    | Панель администратора |
 | https://example.org/api/docs/ | Документация к API    |
 
 ## 🚀 Запуск
@@ -55,7 +55,7 @@ python manage.py collectstatic --noinput
 python manage.py createsuperuser
 python manage.py loaddata ../data/ingredients.json
 ```
-3.1.3. Запустите сервер
+#### 3.1.3. Запустите сервер
 ```bash
 python manage.py runserver
 ```
