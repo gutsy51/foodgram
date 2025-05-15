@@ -1,12 +1,12 @@
-from djoser.serializers import (
-    UserSerializer as DjoserUserSerializer,
-    UserCreateSerializer as DjoserUserCreateSerializer
-)
+from collections import Counter
+
+from djoser.serializers import UserSerializer as DjoserUserSerializer
 from django.contrib.auth import get_user_model
 from rest_framework import serializers as ser
 from drf_extra_fields.fields import Base64ImageField
 
 from recipes.models import Ingredient, RecipeIngredient, Recipe
+from foodgram.constants import RECIPE_INGREDIENT_MIN_AMOUNT
 
 
 User = get_user_model()
@@ -29,27 +29,11 @@ class UserSerializer(DjoserUserSerializer):
             'is_subscribed', 'avatar',
         )
 
-    def get_is_subscribed(self, obj):
+    def get_is_subscribed(self, user):
         request = self.context['request']
-        if request and request.user.is_authenticated:
-            return request.user.authors.filter(author=obj).exists()
-        return False
-
-
-class UserCreateSerializer(DjoserUserCreateSerializer):
-    """An extended djoser serializer to post users data
-
-    Used when registering new user or on password change.
-    """
-
-    class Meta:
-        model = User
-        fields = (
-            'email', 'id', 'username', 'first_name', 'last_name',
-            'password',
-        )
-        extra_kwargs = {'password': {'write_only': True}}
-
+        return (request and
+                request.user.is_authenticated and
+                user.authors.filter(subscriber=request.user).exists())
 
 
 class IngredientSerializer(ser.ModelSerializer):
@@ -72,7 +56,7 @@ class RecipeIngredientSerializer(ser.ModelSerializer):
     measurement_unit = ser.CharField(
         source='ingredient.measurement_unit', read_only=True,
     )
-    amount = ser.IntegerField(min_value=1)
+    amount = ser.IntegerField(min_value=RECIPE_INGREDIENT_MIN_AMOUNT)
 
     class Meta:
         model = RecipeIngredient
@@ -120,16 +104,16 @@ class RecipeSerializer(ser.ModelSerializer):
         )
 
     # Getters.
-    def get_is_favorited(self, obj):
+    def get_is_favorited(self, recipe):
         request = self.context.get('request')
         if request and request.user.is_authenticated:
-            return obj.favorites.filter(user=request.user).exists()
+            return recipe.favorites.filter(user=request.user).exists()
         return False
 
-    def get_is_in_shopping_cart(self, obj):
+    def get_is_in_shopping_cart(self, recipe):
         request = self.context.get('request')
         if request and request.user.is_authenticated:
-            return obj.shopping_carts.filter(user=request.user).exists()
+            return recipe.shopping_carts.filter(user=request.user).exists()
         return False
 
     # Validators and setters.
@@ -149,16 +133,10 @@ class RecipeSerializer(ser.ModelSerializer):
         if not ingredients:
             raise ser.ValidationError({'ingredients': 'Обязательное поле.'})
         ids = [x['ingredient'].id for x in ingredients]
-        duplicate_ids = [x for x in ids if ids.count(x) > 1]
+        duplicate_ids = [x for x, count in Counter(ids).items() if count > 1]
         if duplicate_ids:
             raise ser.ValidationError(
                 {'ingredients': f'Ингредиенты {duplicate_ids} повторяются.'}
-            )
-        not_exist_ids = [x for x in ids
-                         if not Ingredient.objects.filter(id=x).exists()]
-        if not_exist_ids:
-            raise ser.ValidationError(
-                {'ingredients': f'Не найден(ы) ингредиенты {not_exist_ids}.'}
             )
         return ingredients
 
@@ -167,8 +145,8 @@ class RecipeSerializer(ser.ModelSerializer):
         """Set recipe's ingredients."""
         RecipeIngredient.objects.bulk_create(
             RecipeIngredient(
-                recipe_id=recipe.id,
-                ingredient_id=x['ingredient'].id,
+                recipe=recipe,
+                ingredient=x['ingredient'],
                 amount=x['amount'],
             )
             for x in ingredients
@@ -184,20 +162,20 @@ class RecipeSerializer(ser.ModelSerializer):
     def update(self, instance, validated_data):
         ingredients_data = validated_data.pop('ingredients_amounts', None)
         ingredients_data = self.validate_ingredients(ingredients_data)
-        instance = super().update(instance, validated_data)
         instance.ingredients_amounts.all().delete()
         self.set_recipe_ingredients(instance, ingredients_data)
-        return instance
+        return super().update(instance, validated_data)
 
 
 class ShortRecipeSerializer(ser.ModelSerializer):
-    """A shortened serializer for working with subscriptions and baskets."""
+    """A shortened read-only serializer for working with subs and carts."""
     class Meta:
         model = Recipe
         fields = ('id', 'name', 'image', 'cooking_time')
+        read_only_fields = fields
 
 
-class UserRecipesSerializer(DjoserUserSerializer):
+class UserRecipesSerializer(UserSerializer):
     """A user with his recipes serializer.
 
     Example:
@@ -228,9 +206,12 @@ class UserRecipesSerializer(DjoserUserSerializer):
             'is_subscribed', 'recipes', 'recipes_count', 'avatar'
         )
 
-    def get_recipes(self, obj):
-        request = self.context.get('request')
-        recipes_limit = int(request.query_params.get('recipes_limit', '10000'))
+    def get_recipes(self, user):
         return ShortRecipeSerializer(
-            obj.recipes.all()[:recipes_limit], many=True, context=self.context
+            user.recipes.all()[:int(
+                self.context.get('request').query_params.get('recipes_limit',
+                                                             10**10)
+            )],
+            many=True,
+            context=self.context
         ).data

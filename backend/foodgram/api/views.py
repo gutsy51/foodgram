@@ -1,8 +1,8 @@
-from io import BytesIO
+from datetime import datetime
 
 from django.contrib.auth import get_user_model
 from django.db.models import F, Sum
-from django.http import Http404, FileResponse
+from django.http import FileResponse
 from django.shortcuts import get_object_or_404
 
 from django_filters.rest_framework import DjangoFilterBackend
@@ -11,8 +11,9 @@ from djoser.views import UserViewSet as DjoserUserViewSet
 
 from rest_framework import status
 from rest_framework.decorators import action
-from rest_framework.exceptions import NotFound, ValidationError
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.exceptions import ValidationError
+from rest_framework.permissions import (IsAuthenticated,
+                                        IsAuthenticatedOrReadOnly)
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
@@ -41,13 +42,6 @@ class UserViewSet(DjoserUserViewSet):
 
     # Rename `id` to `pk` as id is a python reserved keyword.
     lookup_url_kwarg = 'pk'
-
-    def get_object(self):
-        """Just translate a 404 error."""
-        try:
-            return super().get_object()
-        except Http404:
-            raise NotFound('Пользователь не найден.')
 
     @action(
         methods=('get',),
@@ -82,11 +76,11 @@ class UserViewSet(DjoserUserViewSet):
             serializer.save()
             data = {'avatar': serializer.data['avatar']}
             return Response(data, status=status.HTTP_200_OK)
-        elif request.method == 'DELETE':
-            request.user.avatar.delete()
-            request.user.avatar = None
-            request.user.save()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        request.user.avatar.delete()
+        request.user.avatar = None
+        request.user.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     @action(
         methods=('get',),
@@ -121,18 +115,19 @@ class UserViewSet(DjoserUserViewSet):
                 raise ValidationError('Нельзя подписаться на самого себя.')
             obj, is_created = user.subscriptions.get_or_create(author=author)
             if not is_created:
-                raise ValidationError('Вы уже подписаны.')
+                raise ValidationError(f'Вы уже подписаны на {author}.')
             serializer = UserRecipesSerializer(
                 author, context={'request': request}
             )
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-        elif request.method == 'DELETE':
-            obj = user.subscriptions.filter(author=author)
-            if not obj.exists():
-                raise ValidationError('Вы не подписаны.')
-            obj.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+        # Specification awaits the return of the HTTP400, not HTTP404,
+        # Therefore, don't use get_object_or_404().
+        obj = user.subscriptions.filter(author=author)
+        if not obj.exists():
+            raise ValidationError('Вы не подписаны.')
+        obj.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class IngredientViewSet(ReadOnlyModelViewSet):
@@ -152,7 +147,7 @@ class RecipeViewSet(ModelViewSet):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
     short_serializer_class = ShortRecipeSerializer
-    permission_classes = (IsObjAuthorOrReadOnly,)
+    permission_classes = (IsObjAuthorOrReadOnly, IsAuthenticatedOrReadOnly)
 
     filter_backends = (DjangoFilterBackend,)
     filterset_class = RecipeFilterSet
@@ -181,30 +176,31 @@ class RecipeViewSet(ModelViewSet):
                 user_id=user.id, recipe_id=recipe.id
             )
             if not is_created:
-                raise ValidationError('Рецепт уже в списке.')
+                raise ValidationError(f'Рецепт "{recipe}" уже в списке.')
             return Response(self.short_serializer_class(recipe).data,
                             status=status.HTTP_201_CREATED)
-        elif request.method == 'DELETE':
-            obj = model.objects.filter(user=user, recipe=recipe)
-            if not obj.exists():
-                raise ValidationError('Рецепт не найден.')
-            obj.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        # Specification awaits the return of the HTTP400, not HTTP404,
+        # Therefore, don't use get_object_or_404().
+        obj = model.objects.filter(user=user, recipe=recipe)
+        if not obj.exists():
+            raise ValidationError(f'Рецепт "{recipe}" не существует.')
+        obj.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     @staticmethod
-    def format_shopping_list_text(ingredients):
-        """Return formatted string with ingredients amounts.
+    def format_shopping_list_text(recipes, ingredients):
+        """Return formatted string with recipes and ingredients amounts."""
+        return '\n'.join([
+            f'Список покупок от {datetime.now().strftime("%d.%m.%Y")}:',
+            f'\nВы хотели приготовить:',
+            *[f'{i}. {x.name}, автор: {x.author})'
+              for i, x in enumerate(recipes, 1)],
+            f'\nКупить:',
+            *[f'{i}. {x["name"]} — {x["amount"]} {x["unit"]}'
+              for i, x in enumerate(ingredients, 1)],
+        ]) if ingredients else 'Список покупок пуст.'
 
-        Format:
-        1. <ingredient> — <amount> <unit>
-        2. ...
-
-        Where <amount> is the total amount of the same ingredients.
-        """
-        return '\n'.join(
-            f"{i}. {x['name'].capitalize()} — {x['amount']} {x['unit']}"
-            for i, x in enumerate(ingredients, 1)
-        ) if ingredients else 'Empty list.'
 
     # Actions.
     @action(
@@ -238,7 +234,10 @@ class RecipeViewSet(ModelViewSet):
     )
     def download_shopping_cart(self, request):
         """Return a file with a list of ingredients and their amounts."""
-        content = self.format_shopping_list_text(
+        recipes = Recipe.objects.filter(
+            shopping_carts__user=request.user
+        ).distinct()
+        ingredients = (
             RecipeIngredient.objects
             .filter(recipe__in=request.user.shopping_carts.values('recipe'))
             .values(name=F('ingredient__name'),
@@ -246,9 +245,8 @@ class RecipeViewSet(ModelViewSet):
             .annotate(amount=Sum('amount'))
             .order_by('name')
         )
-        buffer = BytesIO(content.encode('utf-8'))
         return FileResponse(
-            buffer,
+            self.format_shopping_list_text(recipes, ingredients),
             filename='shopping_list.txt',
             as_attachment=True,
             content_type='text/plain'
