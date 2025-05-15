@@ -33,9 +33,10 @@ services:
     environment:
       - IS_DOCKER=true  # Tell Django not to search for .env as it loaded by Docker.
     volumes:
-      - ../backend/foodgram:/app/foodgram/ # Hot-reload.
+      - ../backend/foodgram:/app/          # Hot-reload.
       - back_static:/app/foodgram/static/  # Static files.
       - back_media:/app/foodgram/media/    # Media files.
+      - ../data/:/app/data/                # Data examples.
     depends_on:
       - postgres
     networks:

@@ -53,7 +53,7 @@ pip install -r requirements.txt
 python manage.py migrate
 python manage.py collectstatic --noinput
 python manage.py createsuperuser
-python manage.py loaddata ../data/ingredients.json
+python manage.py load_ingredients ../data/ingredients.json
 ```
 #### 3.1.3. Запустите сервер
 ```bash
@@ -80,12 +80,12 @@ docker compose logs -f         # Просмотр логов в режиме с�
 
 #### 3.2.3. Создайте суперпользователя
 ```bash
-docker compose exec backend python ./foodgram/manage.py createsuperuser
+docker compose exec backend python manage.py createsuperuser
 ```
 
 #### 3.2.4 Импортируйте ингредиенты
 ```bash
-docker compose exec backend python manage.py loaddata ./data/ingredients.json
+docker compose exec backend python manage.py load_ingredients ingredients.json
 ```
 
 
