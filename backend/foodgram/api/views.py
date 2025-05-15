@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from django.db.models import F, Sum
 from django.http import FileResponse
 from django.shortcuts import get_object_or_404
+from django.urls import reverse
 
 from django_filters.rest_framework import DjangoFilterBackend
 
@@ -259,7 +260,10 @@ class RecipeViewSet(ModelViewSet):
         url_name='get-link',
     )
     def get_link(self, request, pk):
-        """Return a link to the recipe."""
-        recipe = get_object_or_404(Recipe, pk=pk)
-        url = f'{request.get_host()}/recipes/{recipe.id}/'
-        return Response({'short-link': url}, status=status.HTTP_200_OK)
+        """Return a 'short'-link to the recipe."""
+        get_object_or_404(Recipe, pk=pk)
+        return Response({
+            'short-link': request.build_absolute_uri(
+                reverse('recipes:get_recipe', args=(pk,))
+            )
+        })
