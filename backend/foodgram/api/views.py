@@ -23,8 +23,9 @@ from recipes.models import (Ingredient, Recipe, RecipeIngredient,
 
 from api.filters import NameFilterSet, RecipeFilterSet
 from api.permissions import IsObjAuthorOrReadOnly
-from api.serializers import (IngredientSerializer, RecipeSerializer,
-                             ShortRecipeSerializer, UserRecipesSerializer)
+from api.serializers import (IngredientSerializer,
+                             ShortRecipeSerializer, UserRecipesSerializer,
+                             ReadRecipeSerializer, CreateRecipeSerializer)
 
 
 User = get_user_model()
@@ -146,20 +147,24 @@ class RecipeViewSet(ModelViewSet):
     """CRUD operations with recipes."""
 
     queryset = Recipe.objects.all()
-    serializer_class = RecipeSerializer
-    short_serializer_class = ShortRecipeSerializer
     permission_classes = (IsObjAuthorOrReadOnly, IsAuthenticatedOrReadOnly)
 
     filter_backends = (DjangoFilterBackend,)
     filterset_class = RecipeFilterSet
 
     # Core methods.
+    def get_serializer_class(self):
+        """Return READ or CREATE serializer."""
+        return (ReadRecipeSerializer if self.action in ('list', 'retrieve') else
+                CreateRecipeSerializer)
+
     def perform_create(self, serializer):
         """Create new recipe and assign author to it."""
         serializer.save(author=self.request.user)
 
     # Additional methods.
-    def handle_user_recipe_relation(self, model, request, recipe_id):
+    @staticmethod
+    def handle_user_recipe_relation(model, request, recipe_id):
         """POST or DEL user-recipe 'subscription' in Favorite or ShoppingCart.
 
         :param model: Favorite or ShoppingCart model class.
@@ -178,7 +183,7 @@ class RecipeViewSet(ModelViewSet):
             )
             if not is_created:
                 raise ValidationError(f'Рецепт "{recipe}" уже в списке.')
-            return Response(self.short_serializer_class(recipe).data,
+            return Response(ShortRecipeSerializer(recipe).data,
                             status=status.HTTP_201_CREATED)
 
         # Specification awaits the return of the HTTP400, not HTTP404,
@@ -201,7 +206,6 @@ class RecipeViewSet(ModelViewSet):
             *[f'{i}. {x["name"]} — {x["amount"]} {x["unit"]}'
               for i, x in enumerate(ingredients, 1)],
         ]) if ingredients else 'Список покупок пуст.'
-
 
     # Actions.
     @action(

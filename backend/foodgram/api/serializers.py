@@ -44,8 +44,8 @@ class IngredientSerializer(ser.ModelSerializer):
         fields = ('id', 'name', 'measurement_unit')
 
 
-class RecipeIngredientSerializer(ser.ModelSerializer):
-    """An ingredient in a recipe serializer."""
+class ReadRecipeIngredientSerializer(ser.ModelSerializer):
+    """A read-only ingredient in a recipe serializer."""
 
     id = ser.PrimaryKeyRelatedField(
         source='ingredient', queryset=Ingredient.objects.all(),
@@ -63,8 +63,21 @@ class RecipeIngredientSerializer(ser.ModelSerializer):
         fields = ('id', 'name', 'measurement_unit', 'amount')
 
 
-class RecipeSerializer(ser.ModelSerializer):
-    """A recipe serializer.
+class CreateRecipeIngredientSerializer(ser.ModelSerializer):
+    """A create/update/delete ingredient in a recipe serializer."""
+
+    id = ser.PrimaryKeyRelatedField(
+        source='ingredient', queryset=Ingredient.objects.all(),
+    )
+    amount = ser.IntegerField(min_value=RECIPE_INGREDIENT_MIN_AMOUNT)
+
+    class Meta:
+        model = RecipeIngredient
+        fields = ('id', 'amount')
+
+
+class ReadRecipeSerializer(ser.ModelSerializer):
+    """A read-only recipe serializer.
 
     Example:
     {
@@ -78,7 +91,10 @@ class RecipeSerializer(ser.ModelSerializer):
             'is_subscribed': False,
             'avatar': 'https://example.com/avatar.jpg',
         },
-        'ingredients': [{'id': 1, 'amount': 5}, ...],
+        'ingredients': [
+            {'id': 1, 'name': 'Salt', 'measurement_unit': 'kg', 'amount': 5},
+             ...
+        ],
         'is_favorited': True,
         'is_in_shopping_cart': False,
         'name': 'My recipe!!!',
@@ -87,14 +103,12 @@ class RecipeSerializer(ser.ModelSerializer):
         'cooking_time': 60
     }
     """
-
     author = UserSerializer(read_only=True)
-    ingredients = RecipeIngredientSerializer(
+    ingredients = ReadRecipeIngredientSerializer(
         source='ingredients_amounts', many=True,
     )
     is_favorited = ser.SerializerMethodField()
     is_in_shopping_cart = ser.SerializerMethodField()
-    image = Base64ImageField()
 
     class Meta:
         model = Recipe
@@ -103,20 +117,31 @@ class RecipeSerializer(ser.ModelSerializer):
             'is_in_shopping_cart', 'name', 'image', 'text', 'cooking_time',
         )
 
-    # Getters.
     def get_is_favorited(self, recipe):
         request = self.context.get('request')
-        if request and request.user.is_authenticated:
-            return recipe.favorites.filter(user=request.user).exists()
-        return False
+        return (request and request.user.is_authenticated and
+                recipe.favorites.filter(user=request.user).exists())
 
     def get_is_in_shopping_cart(self, recipe):
         request = self.context.get('request')
-        if request and request.user.is_authenticated:
-            return recipe.shopping_carts.filter(user=request.user).exists()
-        return False
+        return (request and request.user.is_authenticated and
+                recipe.shopping_carts.filter(user=request.user).exists())
 
-    # Validators and setters.
+
+class CreateRecipeSerializer(ser.ModelSerializer):
+    """A create/update/delete recipe serializer."""
+
+    ingredients = CreateRecipeIngredientSerializer(
+        source='ingredients_amounts', many=True,
+    )
+    image = Base64ImageField()
+
+    class Meta:
+        model = Recipe
+        fields = (
+            'id', 'ingredients', 'image', 'name', 'text', 'cooking_time',
+        )
+
     @staticmethod
     def validate_image(image):
         """Prevent empty image fields from being saved (i.e. {'image': ''})."""
@@ -126,18 +151,14 @@ class RecipeSerializer(ser.ModelSerializer):
 
     @staticmethod
     def validate_ingredients(ingredients):
-        """Ingredients must: be non-empty, exist, be unique.
-
-        Will be called in Serializer.validate() method.
-        """
+        """Ingredients must: be non-empty, exist, be unique."""
         if not ingredients:
-            raise ser.ValidationError({'ingredients': 'Обязательное поле.'})
+            raise ser.ValidationError('Обязательное поле.')
         ids = [x['ingredient'].id for x in ingredients]
         duplicate_ids = [x for x, count in Counter(ids).items() if count > 1]
         if duplicate_ids:
-            raise ser.ValidationError(
-                {'ingredients': f'Ингредиенты {duplicate_ids} повторяются.'}
-            )
+            raise ser.ValidationError(f'Ингредиенты {duplicate_ids} '
+                                      f'не уникальны.')
         return ingredients
 
     @staticmethod
@@ -165,6 +186,10 @@ class RecipeSerializer(ser.ModelSerializer):
         instance.ingredients_amounts.all().delete()
         self.set_recipe_ingredients(instance, ingredients_data)
         return super().update(instance, validated_data)
+
+    def to_representation(self, instance):
+        return ReadRecipeSerializer(
+            instance, context={'request': self.context.get('request')}).data
 
 
 class ShortRecipeSerializer(ser.ModelSerializer):

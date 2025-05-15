@@ -54,6 +54,8 @@ class RecipeFilterSet(filters.FilterSet):
         field = self.related_fields.get(name)
         if not field:
             return queryset
-        lookup = {f'{field}__user_id': self.request.user.id}
+        if not self.request.user or not self.request.user.is_authenticated:
+            return queryset.none()
+        lookup = {f'{field}__user': self.request.user}
         return (queryset.filter(**lookup) if value == 1
                 else queryset.exclude(**lookup))
