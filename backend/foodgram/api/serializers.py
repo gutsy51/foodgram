@@ -31,9 +31,9 @@ class UserSerializer(DjoserUserSerializer):
 
     def get_is_subscribed(self, user):
         request = self.context['request']
-        return (request and
-                request.user.is_authenticated and
-                user.authors.filter(subscriber=request.user).exists())
+        return (request
+                and request.user.is_authenticated
+                and user.authors.filter(subscriber=request.user).exists())
 
 
 class IngredientSerializer(ser.ModelSerializer):
@@ -119,13 +119,13 @@ class ReadRecipeSerializer(ser.ModelSerializer):
 
     def get_is_favorited(self, recipe):
         request = self.context.get('request')
-        return (request and request.user.is_authenticated and
-                recipe.favorites.filter(user=request.user).exists())
+        return (request and request.user.is_authenticated
+                and recipe.favorites.filter(user=request.user).exists())
 
     def get_is_in_shopping_cart(self, recipe):
         request = self.context.get('request')
-        return (request and request.user.is_authenticated and
-                recipe.shopping_carts.filter(user=request.user).exists())
+        return (request and request.user.is_authenticated
+                and recipe.shopping_carts.filter(user=request.user).exists())
 
 
 class CreateRecipeSerializer(ser.ModelSerializer):

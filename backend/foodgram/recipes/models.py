@@ -92,7 +92,6 @@ class Subscription(models.Model):
         return f'{self.subscriber} подписан на {self.author}'
 
 
-
 # Recipes.
 class Ingredient(models.Model):
     """A model of the recipe ingredient."""
@@ -168,7 +167,7 @@ class Recipe(models.Model):
 class RecipeIngredient(models.Model):
     """An ingredient used in the recipe model.
 
-    The intermediate table indicates the amount of the ingredient in the recipe.
+    The intermediate table indicates the amount of the ingredient in recipe.
     """
 
     recipe = models.ForeignKey(

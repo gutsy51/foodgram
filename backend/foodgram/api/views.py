@@ -155,7 +155,8 @@ class RecipeViewSet(ModelViewSet):
     # Core methods.
     def get_serializer_class(self):
         """Return READ or CREATE serializer."""
-        return (ReadRecipeSerializer if self.action in ('list', 'retrieve') else
+        return (ReadRecipeSerializer
+                if self.action in ('list', 'retrieve') else
                 CreateRecipeSerializer)
 
     def perform_create(self, serializer):
@@ -199,10 +200,10 @@ class RecipeViewSet(ModelViewSet):
         """Return formatted string with recipes and ingredients amounts."""
         return '\n'.join([
             f'Список покупок от {datetime.now().strftime("%d.%m.%Y")}:',
-            f'\nВы хотели приготовить:',
+            '\nВы хотели приготовить:',
             *[f'{i}. {x.name}, автор: {x.author})'
               for i, x in enumerate(recipes, 1)],
-            f'\nКупить:',
+            '\nКупить:',
             *[f'{i}. {x["name"]} — {x["amount"]} {x["unit"]}'
               for i, x in enumerate(ingredients, 1)],
         ]) if ingredients else 'Список покупок пуст.'

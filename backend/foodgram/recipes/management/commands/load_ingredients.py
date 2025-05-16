@@ -19,10 +19,10 @@ class Command(BaseCommand):
                     ignore_conflicts=True
                 )
             self.stdout.write(
-                self.style.SUCCESS(f'Добавлено {len(ingredients)} ингредиентов')
+                self.style.SUCCESS(f'Loaded {len(ingredients)} ingredients')
             )
 
         except Exception as e:
             self.stderr.write(
-                self.style.ERROR(f'Ошибка загрузки {file_name}: {e}')
+                self.style.ERROR(f'Error loading {file_name}: {e}')
             )
