@@ -43,7 +43,7 @@ jobs:
         run: |
           echo "Waiting for server..."
           sleep 10
-          curl --fail http://127.0.0.1:8000/api/ || (echo "Server not responding" && exit 1)
+          curl --fail http://127.0.0.1:8000/admin/ || (echo "Server not responding" && exit 1)
 
       # Run API tests.
       - name: Install Newman
