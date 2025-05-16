@@ -34,7 +34,7 @@ jobs:
       - name: Migrate
         run: python ./backend/foodgram/manage.py migrate
       - name: Load example data
-        run: python ./backend/foodgram/manage.py loaddata ./backend/foodgram/db_example.json
+        run: python ./backend/foodgram/manage.py loaddata ./data/db_example.json
       - name: Start server in background
         run: |
           cd ./backend/foodgram/
