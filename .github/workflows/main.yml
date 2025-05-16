@@ -33,8 +33,10 @@ jobs:
         run: cp ./infra/.env.example ./infra/.env
       - name: Migrate
         run: python ./backend/foodgram/manage.py migrate
-      - name: Load example data
-        run: python ./backend/foodgram/manage.py loaddata ./data/db_example.json
+#      - name: Load example data
+#        run: python ./backend/foodgram/manage.py loaddata ./data/db_example.json
+      - name: Load ingredients
+        run: python ./backend/foodgram/manage.py load_ingredients ./data/ingredients.json
       - name: Start server in background
         run: |
           cd ./backend/foodgram/
